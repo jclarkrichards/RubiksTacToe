@@ -37,28 +37,33 @@ public class GameLogic : MonoBehaviour
     void Start()
     {
         if (numPlayers == 1) { NPCPlayer.S.alive = true; }
+        SetupPieces();            
+        state = new GameState(PlayField.S.board, 0);
+        SetupGame();       
+    }
+
+    // Create the Sun and Moon pieces and place them on a single location on the "board" initially
+    void SetupPieces()
+    {
         sunPieces = new GameObject[8];
         moonPieces = new GameObject[8];
-        
-        for(int i=0; i<8; i++)
+
+        for (int i = 0; i < 8; i++)
         {
             sunPieces[i] = Instantiate(sunPrefab) as GameObject;
-            moonPieces[i] = Instantiate(moonPrefab) as GameObject;    
+            moonPieces[i] = Instantiate(moonPrefab) as GameObject;
             sunPieces[i].transform.name = "SUN";
-            moonPieces[i].transform.name = "MOON";       
+            moonPieces[i].transform.name = "MOON";
         }
-        
+
         // Set initial positions by placing each piece on the board.  Moon on top.
         for (int i = 0; i < 8; i++)
         {
             moonPieces[i].GetComponent<Piece>().SetStartPosition(PlayField.S.locations[i].transform.position);
             moonPieces[i].GetComponent<Piece>().home = PlayField.S.moonHome;
-            sunPieces[i].GetComponent<Piece>().SetStartPosition(PlayField.S.locations[i + 8].transform.position);
+            sunPieces[i].GetComponent<Piece>().SetStartPosition(PlayField.S.locations[15-i].transform.position);
             sunPieces[i].GetComponent<Piece>().home = PlayField.S.sunHome;
         }
-        
-        state = new GameState(PlayField.S.board, 0);
-        SetupGame();       
     }
 	
 	// Update is called once per frame
@@ -166,10 +171,7 @@ public class GameLogic : MonoBehaviour
     public void SetPiecesAsPlayed()
     {
         for(int i=0; i<moonPieces.Length; i++)
-        {
-            //moonPieces[i].GetComponent<Piece>().SetPosition(moonPieces[i].transform.position);
-            //sunPieces[i].GetComponent<Piece>().SetPosition(sunPieces[i].transform.position);
-        
+        {                
             if(!moonPieces[i].GetComponent<Piece>().AtHome())
                 moonPieces[i].GetComponent<Piece>().played = true;
             if(!sunPieces[i].GetComponent<Piece>().AtHome())    
@@ -208,7 +210,7 @@ public class GameLogic : MonoBehaviour
             if(winners[0] > winners[1]) { print("Sun Wins"); }
             else if(winners[0] < winners[1]) { print("Moon Wins"); }
             else { print("Draw"); }
-            //SceneManager.LoadScene("testing"); 
+            //SceneManager.LoadScene("start"); 
         }
         //print(sunTurn);
     }
@@ -228,14 +230,7 @@ public class GameLogic : MonoBehaviour
         }         
     }
 
-    // For testing if we want to know an array's contents
-    /*
-    public void PrintTurn()
-    {
-        int[] board = PlayField.S.EvaluateBoard();
-        GameState s = new GameState(board, 0);
-    }
-    */
+   
     public void ReportState()
     {
         int[] p = PlayField.S.EvaluateBoard();

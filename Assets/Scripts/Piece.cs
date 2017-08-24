@@ -16,6 +16,8 @@ public class Piece : MonoBehaviour
     bool _npcdrag = false;              // NPC is moving the piece 
     DragEffect drag;                    // Tilt the GameObject as it is being dragged
     bool _positionSet = false;
+    bool _active = false;               // Active piece has z = -1 (on top of other pieces)
+    bool _locked = false;               // true if we want to force a piece to be unmoveable (locked)
 
 	// Use this for initialization
 	void Awake ()
@@ -54,7 +56,6 @@ public class Piece : MonoBehaviour
                 if(!this.GetComponent<LerpTest>().Moving())
                 {
                     EndTiltLerp();
-
                 }
             }
             else
@@ -76,6 +77,7 @@ public class Piece : MonoBehaviour
     {
         npcdrag = true;
         //this.GetComponent<LerpTest>().alive = true;
+        //GetComponent<LerpTest>().ltype = LerpType.sin;
         this.GetComponent<LerpTest>().endPos = home;
         this.GetComponent<LerpTest>().delay = delay;
         positionSet = false;
@@ -111,6 +113,7 @@ public class Piece : MonoBehaviour
         transform.position = position;
         previousPosition = position;
         this.GetComponent<LerpTest>().ResetPosition();
+        GetComponent<LerpTest>().ltype = LerpType.linear;
     }
 
     // Set starting conditions of this piece
@@ -305,5 +308,17 @@ public class Piece : MonoBehaviour
     {
         set { _positionSet = value; }
         get { return _positionSet; }
+    }
+
+    public bool active
+    {
+        set { _active = value; }
+        get { return _active; }
+    }
+
+    public bool locked
+    {
+        set { _locked = value; }
+        get { return _locked; }
     }
 }

@@ -16,6 +16,9 @@ public enum VerticalDrag
     NONE
 }
 
+/// <summary>
+/// When dragging a piece (either player or NPC) the piece will tilt in the direction it is being dragged
+/// </summary>
 public class DragEffect
 {
     HorizontalDrag h_drag = HorizontalDrag.NONE;
