@@ -120,7 +120,9 @@ public class LerpTest : MonoBehaviour
     {
         set
         {        
-            _endPos = value;           
+            _endPos = value;
+            //_endPos.z = -1;
+            //startPos.z = -1;      
             initTime = Time.time;
         }
         get { return _endPos; }
