@@ -114,9 +114,9 @@ public class NPCPlayer : MonoBehaviour
             if (pieces[i].transform.position == PlayField.S.locations[iFrom].transform.position)
             {
                 flippingPiece = pieces[i];
-                print("Home " + pieces[i].GetComponent<Piece>().home);
-                print("From: " + pieces[i].transform.position);
-                print("To: " + PlayField.S.locations[iTo].transform.position);
+                //print("Home " + pieces[i].GetComponent<Piece>().home);
+                //print("From: " + pieces[i].transform.position);
+                //print("To: " + PlayField.S.locations[iTo].transform.position);
                 pieces[i].GetComponent<Piece>().Flip();
                 pieces[i].GetComponent<Piece>().DragByNPC(PlayField.S.locations[iTo].transform.position, 0);
             }

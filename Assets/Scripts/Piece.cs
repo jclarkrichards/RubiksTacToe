@@ -138,7 +138,7 @@ public class Piece : MonoBehaviour
     // Whenever a piece is being clicked/tapped
     private void OnMouseDown()
     {
-        if(GameLogic.S.ValidPiecesToSelect(gameObject))
+        if(GameLogic.S.ValidPiecesToSelect(gameObject) && !locked)
         {
             //print("valid piece to move");
             followMouse = true;

@@ -72,9 +72,9 @@ public class LerpTest : MonoBehaviour
                     moving = false;
                     startPos = endPos;
                 }
-                print("u = " + u);
+                //print("u = " + u);
                 u = LerpU(u, ltype);
-                print("  = \n" + u);
+                //print("  = \n" + u);
                 transform.position = (1 - u) * startPos + u * endPos;
             }
         }       

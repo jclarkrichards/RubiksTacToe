@@ -106,8 +106,7 @@ public class GameLogic : MonoBehaviour
                                 return false;
                         }        
                     }
-                    else { return false; }
-                    
+                    else { return false; }                   
                 }
                 else { return false; }
             }
@@ -206,6 +205,11 @@ public class GameLogic : MonoBehaviour
      
         if(state.end)
         {
+            for(int i=0; i<8; i++)
+            {
+                sunPieces[i].GetComponent<Piece>().locked = true;
+                moonPieces[i].GetComponent<Piece>().locked = true;
+            }
             int[] winners = state.CheckWin();
             if(winners[0] > winners[1]) { print("Sun Wins"); }
             else if(winners[0] < winners[1]) { print("Moon Wins"); }
