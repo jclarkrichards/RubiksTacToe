@@ -64,15 +64,16 @@ public class LerpTest : MonoBehaviour
             }        
             else
             {
-                float u = (Time.time - startTime) / duration;
-                u = LerpU(u, ltype);
-
+                float u = (Time.time - startTime) / duration;         
                 if (u >= 1)
                 {
                     u = 1;
                     moving = false;
                     startPos = endPos;
                 }
+                print("u = " + u);
+                u = LerpU(u, ltype);
+                print("  = \n" + u);
                 transform.position = (1 - u) * startPos + u * endPos;
             }
         }       
@@ -88,7 +89,7 @@ public class LerpTest : MonoBehaviour
                 u2 = u;
                 break;
             case LerpType.sin:
-                u2 = u + 0.2f * Mathf.Sin(2 * Mathf.PI * u);
+                u2 = u - 0.4f * Mathf.Sin(2 * Mathf.PI * u);
                 break;
         }
         return u2;

@@ -77,7 +77,7 @@ public class Piece : MonoBehaviour
     {
         npcdrag = true;
         //this.GetComponent<LerpTest>().alive = true;
-        //GetComponent<LerpTest>().ltype = LerpType.sin;
+        GetComponent<LerpTest>().ltype = LerpType.sin;
         this.GetComponent<LerpTest>().endPos = home;
         this.GetComponent<LerpTest>().delay = delay;
         positionSet = false;
@@ -88,6 +88,7 @@ public class Piece : MonoBehaviour
     {
         npcdrag = true;
         //this.GetComponent<LerpTest>().alive = true;
+        GetComponent<LerpTest>().ltype = LerpType.linear;
         this.GetComponent<LerpTest>().endPos = pos;
         this.GetComponent<LerpTest>().delay = delay;
         positionSet = false;
@@ -113,7 +114,7 @@ public class Piece : MonoBehaviour
         transform.position = position;
         previousPosition = position;
         this.GetComponent<LerpTest>().ResetPosition();
-        GetComponent<LerpTest>().ltype = LerpType.linear;
+        //GetComponent<LerpTest>().ltype = LerpType.linear;
     }
 
     // Set starting conditions of this piece
