@@ -88,7 +88,7 @@ public class LerpTest : MonoBehaviour
                 u2 = u;
                 break;
             case LerpType.sin:
-                u2 = u + 0.2f * Mathf.Sin(2 * Mathf.PI * u);
+                u2 = u - 0.4f * Mathf.Sin(2 * Mathf.PI * u);
                 break;
         }
         return u2;
@@ -119,7 +119,9 @@ public class LerpTest : MonoBehaviour
     {
         set
         {        
-            _endPos = value;           
+            _endPos = value;
+            //_endPos.z = -1;
+            //startPos.z = -1;      
             initTime = Time.time;
         }
         get { return _endPos; }

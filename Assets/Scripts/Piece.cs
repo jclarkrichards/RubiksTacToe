@@ -52,7 +52,16 @@ public class Piece : MonoBehaviour
             {
                 //print("NPC IS dragging");
                 if(this.GetComponent<LerpTest>().moving)
+                {
+                    //Vector3 p = transform.position;
+                    //p.z = -1.0f;
+                    //transform.position = p;
+
                     transform.rotation = drag.Tilt(transform.position);
+                    
+                    //print(transform.position);
+                }
+                    
                 if(!this.GetComponent<LerpTest>().Moving())
                 {
                     EndTiltLerp();
@@ -77,7 +86,7 @@ public class Piece : MonoBehaviour
     {
         npcdrag = true;
         //this.GetComponent<LerpTest>().alive = true;
-        //GetComponent<LerpTest>().ltype = LerpType.sin;
+        GetComponent<LerpTest>().ltype = LerpType.sin;
         this.GetComponent<LerpTest>().endPos = home;
         this.GetComponent<LerpTest>().delay = delay;
         positionSet = false;
