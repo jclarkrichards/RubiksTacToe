@@ -5,6 +5,7 @@ using UnityEngine;
 public enum LerpType
 {
     linear,
+    sinEasing,
     sin
 }
 
@@ -88,8 +89,11 @@ public class LerpTest : MonoBehaviour
             case LerpType.linear:
                 u2 = u;
                 break;
-            case LerpType.sin:
+            case LerpType.sinEasing:
                 u2 = u - 0.4f * Mathf.Sin(2 * Mathf.PI * u);
+                break;
+            case LerpType.sin:
+                u2 = 2.0f*Mathf.Sin(u);
                 break;
         }
         return u2;
