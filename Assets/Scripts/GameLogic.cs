@@ -10,6 +10,12 @@ public class GameLogic : MonoBehaviour
     public static GameLogic S;  
     public GameObject sunPrefab;
     public GameObject moonPrefab;
+    public GameObject sunText;
+    public GameObject moonText;
+    public GameObject winnerText;
+    public GameObject loserText;
+    public Button playagainButton;
+    public Button mainmenuButton;
 
     [HideInInspector]
     public GameObject[] sunPieces;
@@ -202,6 +208,8 @@ public class GameLogic : MonoBehaviour
         state = new GameState(b, 0);
         SetPiecesAsPlayed();
         PlayField.S.DeactivateButtons();
+
+        
      
         if(state.end)
         {
@@ -211,12 +219,64 @@ public class GameLogic : MonoBehaviour
                 moonPieces[i].GetComponent<Piece>().locked = true;
             }
             int[] winners = state.CheckWin();
-            if(winners[0] > winners[1]) { print("Sun Wins"); }
-            else if(winners[0] < winners[1]) { print("Moon Wins"); }
-            else { print("Draw"); }
-            //SceneManager.LoadScene("start"); 
+
+            //Display results
+            if(winners[0] > winners[1])
+            {
+                GameObject winner = Instantiate(winnerText) as GameObject;
+                GameObject loser = Instantiate(loserText) as GameObject;
+                Vector3 winnerPos = new Vector3(6, -1.5f, -2);
+                Vector3 loserPos = new Vector3(-6, 1.5f, -2);
+                Vector3 winnerEndPos = new Vector3(0, -1.5f, -2);
+                Vector3 loserEndPos = new Vector3(0, 1.5f, -2);
+                loser.transform.localScale = new Vector3(-1.5f, -1.5f, 0);
+                winner.transform.position = winnerPos;
+                loser.transform.position = loserPos;
+                winner.GetComponent<LerpTest>().ResetPosition();
+                loser.GetComponent<LerpTest>().ResetPosition();
+                winner.GetComponent<LerpTest>().endPos = winnerEndPos;
+                loser.GetComponent<LerpTest>().endPos = loserEndPos;
+            }
+            else if(winners[0] < winners[1])
+            {
+                GameObject winner = Instantiate(winnerText) as GameObject;
+                GameObject loser = Instantiate(loserText) as GameObject;
+                Vector3 winnerPos = new Vector3(-6, 1.5f, -2);
+                Vector3 loserPos = new Vector3(6, -1.5f, -2);
+                Vector3 winnerEndPos = new Vector3(0, 1.5f, -2);
+                Vector3 loserEndPos = new Vector3(0, -1.5f, -2);
+                winner.transform.localScale = new Vector3(-1.5f, -1.5f, 0);
+                winner.transform.position = winnerPos;
+                loser.transform.position = loserPos;
+                winner.GetComponent<LerpTest>().ResetPosition();
+                loser.GetComponent<LerpTest>().ResetPosition();
+                winner.GetComponent<LerpTest>().endPos = winnerEndPos;
+                loser.GetComponent<LerpTest>().endPos = loserEndPos;              
+            }
+            else
+            {
+                print("Draw");
+            }
+            playagainButton.gameObject.SetActive(true);
+            mainmenuButton.gameObject.SetActive(true);                     
+            
         }
-        //print(sunTurn);
+        else
+        {
+            if (sunTurn)
+            {
+                Vector3 endPos = sunText.transform.position;
+                endPos.x *= -1;
+                sunText.GetComponent<LerpTest>().endPos = endPos;
+            }
+            else
+            {
+                Vector3 endPos = moonText.transform.position;
+                endPos.x *= -1;
+                moonText.GetComponent<LerpTest>().endPos = endPos;
+            }
+        }
+      
     }
 
     // Initially drag the pieces to their homes
@@ -239,6 +299,16 @@ public class GameLogic : MonoBehaviour
     {
         int[] p = PlayField.S.EvaluateBoard();
         PrintArray(p);
+    }
+
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene("play");
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("start");
     }
     
     public void PrintArray(int[] A)

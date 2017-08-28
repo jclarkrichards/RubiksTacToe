@@ -23,6 +23,7 @@ public class LerpTest : MonoBehaviour
     float initTime;
     float duration;
     bool _moving;
+    [HideInInspector]
     public Vector3 test;  // used for testing end position changes
     //public bool alive = false;
     [HideInInspector]
