@@ -86,7 +86,7 @@ public class Piece : MonoBehaviour
     {
         npcdrag = true;
         //this.GetComponent<LerpTest>().alive = true;
-        GetComponent<LerpTest>().ltype = LerpType.sin;
+        GetComponent<LerpTest>().ltype = LerpType.sinEasing;
         this.GetComponent<LerpTest>().endPos = home;
         this.GetComponent<LerpTest>().delay = delay;
         positionSet = false;

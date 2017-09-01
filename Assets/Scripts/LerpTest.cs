@@ -9,6 +9,12 @@ public enum LerpType
     sin
 }
 
+public enum LerpMethod
+{
+    normal,
+    outandreturn
+}
+
 /// <summary>
 /// Any Gameobject can move from point A to point B on its own.  This helps to make that movement smooth.
 /// This is attached to that gameobject and anytime the startPos and endPos of that gameobject are not equal,
@@ -28,7 +34,10 @@ public class LerpTest : MonoBehaviour
     //public bool alive = false;
     [HideInInspector]
     public LerpType ltype = LerpType.linear;
-    
+    LerpMethod lmethod = LerpMethod.normal;
+    float delayReturn;
+    Vector3 returnPosition;
+    bool returnToPrevious = false;
 
 	// Use this for initialization
 	void Awake ()
@@ -56,28 +65,92 @@ public class LerpTest : MonoBehaviour
         if(startPos != endPos)
         //if(transform.position != endPos)
         {
-            if(!moving)
+            if(lmethod == LerpMethod.normal)
             {
-                if ((Time.time - initTime) >= delay)
+                if (!moving)
                 {
-                    startTime = Time.time;
-                    moving = true;
+                    if ((Time.time - initTime) >= delay)
+                    {
+                        startTime = Time.time;
+                        moving = true;
+                    }
                 }
-            }        
-            else
-            {
-                float u = (Time.time - startTime) / duration;         
-                if (u >= 1)
+                else
                 {
-                    u = 1;
-                    moving = false;
-                    startPos = endPos;
+                    float u = (Time.time - startTime) / duration;
+                    if (u >= 1)
+                    {
+                        u = 1;
+                        moving = false;
+                        startPos = endPos;
+                    }
+                   
+                    u = LerpU(u, ltype);                  
+                    transform.position = (1 - u) * startPos + u * endPos;
                 }
-                //print("u = " + u);
-                u = LerpU(u, ltype);
-                //print("  = \n" + u);
-                transform.position = (1 - u) * startPos + u * endPos;
             }
+            else if(lmethod == LerpMethod.outandreturn)
+            {
+            
+                if(returnToPrevious)
+                {
+                    //print(Time.time - initTime);
+                    if(!moving)
+                    {
+                        if ((Time.time - initTime) >= delayReturn)
+                        {
+                            print("waiting to lerp back");
+                            startTime = Time.time;
+                            moving = true;
+
+                        }
+                    }
+                    
+                    else
+                    {
+                        print("Lerping back");
+                        float u = (Time.time - startTime) / duration;
+                        if (u >= 1)
+                        {
+                            u = 1;
+                            moving = false;
+                            startPos = endPos;                   
+                            returnToPrevious = false;
+                            print("made it back");                     
+                        }
+
+                        u = LerpU(u, LerpType.linear);
+                        transform.position = (1 - u) * startPos + u * endPos;
+                    }
+                }
+                else
+                {
+                    print("moving to center");
+                    float u = (Time.time - startTime) / duration;
+                    if (u >= 1)
+                    {
+                        u = 1;
+                        transform.position = endPos;
+                        moving = false;
+                        startPos = endPos;
+                        endPos = returnPosition;
+                        returnToPrevious = true;
+                        initTime = Time.time;
+                        print("made it to center");
+                        print(startPos + "  " + endPos);
+                        print("Wait " + delayReturn + " seconds");
+                        
+                    }
+                    else
+                    {
+                        u = LerpU(u, LerpType.linear);
+                        transform.position = (1 - u) * startPos + u * endPos;
+                    }
+                    
+                    
+                }
+            }
+            
         }       
     }
 
@@ -118,6 +191,20 @@ public class LerpTest : MonoBehaviour
     {
         if(transform.position != endPos) { return true; }
         return false;
+    }
+
+    // Move a gameobject out to a new location and then wait for a period of time, and return back to original position
+    public void OutAndReturn(Vector3 end, float speed, float delay)
+    {
+        duration = speed;
+        endPos = end;
+        returnPosition = transform.position;
+        delayReturn = delay;
+        delay = 0;
+        lmethod = LerpMethod.outandreturn;
+        startTime = Time.time;
+        moving = true;
+
     }
 
     // When an end position is selected, the lerp timer restarts

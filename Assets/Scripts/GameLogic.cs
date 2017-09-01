@@ -266,14 +266,18 @@ public class GameLogic : MonoBehaviour
             if (sunTurn)
             {
                 Vector3 endPos = sunText.transform.position;
-                endPos.x *= -1;
-                sunText.GetComponent<LerpTest>().endPos = endPos;
+                //endPos.x *= -1;
+                endPos.x = 0;
+                //sunText.GetComponent<LerpTest>().endPos = endPos;
+                sunText.GetComponent<LerpTest>().OutAndReturn(endPos, 0.5f, 2);
             }
             else
             {
                 Vector3 endPos = moonText.transform.position;
-                endPos.x *= -1;
-                moonText.GetComponent<LerpTest>().endPos = endPos;
+                //endPos.x *= -1;
+                endPos.x = 0;
+                //moonText.GetComponent<LerpTest>().endPos = endPos;
+                moonText.GetComponent<LerpTest>().OutAndReturn(endPos, 0.5f, 2);
             }
         }
       

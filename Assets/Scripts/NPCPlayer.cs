@@ -176,7 +176,24 @@ public class NPCPlayer : MonoBehaviour
     void StartMonteCarlo(GameState parent)
     {
         List<int> emptySpots = parent.EmptySpaces();
-        int num = 16 - emptySpots.Count + 10;
+        int num;
+        switch(emptySpots.Count)
+        {
+            case 15:
+                num = 2;
+                break;          
+            case 13:
+                num = 3;
+                break;
+            case 11:     
+                num = 5;
+                break;
+            default:
+                num = 16 - emptySpots.Count + 10;
+                break;
+        }
+        
+        
         //int num = (int)Mathf.Pow(2, 16 - emptySpots.Count - 1) + 10;
         //print("Number of Monte Carlo iterations = " + num);
 
